@@ -30,6 +30,15 @@ const Keyboard = {
         // Add to DOM
         this.elements.main.appendChild(this.elements.keysContainer);
         document.body.appendChild(this.elements.main);
+
+        //Usar automaticamente o teclado apertando no textarea
+        document.querySelectorAll(".use-keyboard-input").forEach(element => {
+            element.addEventListener("focus", () => {
+                this.open(element.value, currentValue => {
+                    element.value = currentValue;
+                });
+            });
+        });
     },
 
     _createKeys(){
@@ -157,7 +166,7 @@ const Keyboard = {
     },
 
     close(){
-        this.value = "";
+        this.properties.value = "";
         this.eventHandlers.oninput = oninput;
         this.eventHandlers.onclose = onclose;
         this.elements.main.classList.add("keyboard--hidden");
@@ -166,9 +175,4 @@ const Keyboard = {
 
 window.addEventListener("DOMContentLoaded", function() {
     Keyboard.init();
-    Keyboard.open("sinsalabin", function(currentValue){
-        console.log("teclado ainda não aomosso" + currentValue);
-    }, function(currentValue){
-        console.log("teclado fechado para o aomosso!" + currentValue);
-    });
 });
